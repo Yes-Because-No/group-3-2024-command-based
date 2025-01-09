@@ -68,7 +68,7 @@ public class Arm extends SubsystemBase{
         armEncoder = m_Arm.getEncoder();
 
         //relatively accurate even with this tolerance. (Measurement in terms of radians)
-        armPidController.setTolerance(0.15);
+        armPidController.setTolerance(0.05);
 
         //set a goal before anything starts so if none is set by default, robot won't act odd
         setArmGoal(Constants.Arm.PID.setpoints.GROUND);
