@@ -16,6 +16,8 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 
+import frc.robot.Constants.ArmConstants.PID.setpoints;
+
 public class RobotContainer {
   //get controller up and running
   private CommandXboxController controller = new CommandXboxController(0);
@@ -49,10 +51,10 @@ public class RobotContainer {
       }));
 
     //if PID is on and you hit A, move arm to ground
-    controller.a().and(PIDEnabled).whileTrue(arm.rotateArmToNewGoalCommand(Constants.Arm.PID.setpoints.GROUND));
+    controller.a().and(PIDEnabled).whileTrue(arm.rotateArmToNewGoalCommand(setpoints.GROUND));
 
     //if PID is on and you hit B, move arm to the high scoring zone
-    controller.b().and(PIDEnabled).whileTrue(arm.rotateArmToNewGoalCommand(Constants.Arm.PID.setpoints.HIGH));
+    controller.b().and(PIDEnabled).whileTrue(arm.rotateArmToNewGoalCommand(setpoints.HIGH));
 
     //this toggles between manual and PID arm control
     controller.x().whileTrue(arm.togglePid());
@@ -92,7 +94,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return Commands.sequence(
-      arm.rotateArmToNewGoalCommand(Constants.Arm.PID.setpoints.HIGH),
+      arm.rotateArmToNewGoalCommand(setpoints.HIGH),
       drive.arcadeDriveCommand(()->0.3, ()->0.0).repeatedly().withTimeout(5)
       );
   }

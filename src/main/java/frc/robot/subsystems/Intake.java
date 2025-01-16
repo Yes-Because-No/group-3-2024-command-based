@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 //constants for the intake
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;;
 
 public class Intake extends SubsystemBase{
     //instantiate intake motor & corresponding encoder
@@ -24,11 +24,11 @@ public class Intake extends SubsystemBase{
 
     public Intake(){
         //give the motor an actual value
-        m_Intake = new SparkMax(Constants.Arm.CANIDs.INTAKE, SparkLowLevel.MotorType.kBrushless);
+        m_Intake = new SparkMax(IntakeConstants.CANIDS.INTAKE, SparkLowLevel.MotorType.kBrushless);
 
         //now create and apply the configurations
         SparkMaxConfig iConfig = new SparkMaxConfig();
-        iConfig.smartCurrentLimit(Constants.Arm.INTAKE_CURRENT_LIMIT);
+        iConfig.smartCurrentLimit(IntakeConstants.INTAKE_CURRENT_LIMIT);
         m_Intake.configure(iConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
 
         //finally, get your (basically unused) encoder

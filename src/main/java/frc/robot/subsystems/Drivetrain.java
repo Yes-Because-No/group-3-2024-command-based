@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants;
+import frc.robot.Constants.DrivetrainConstants;
 
 public class Drivetrain extends SubsystemBase {
     //create motors and encoders (null values)
@@ -40,26 +40,26 @@ public class Drivetrain extends SubsystemBase {
 
     public Drivetrain() {
         // motors
-        m_leftMotor = new SparkMax(Constants.Drivetrain.CANIDs.LEFT, SparkLowLevel.MotorType.kBrushless);
-        m_rightMotor = new SparkMax(Constants.Drivetrain.CANIDs.RIGHT, SparkLowLevel.MotorType.kBrushless);
+        m_leftMotor = new SparkMax(DrivetrainConstants.CANIDs.LEFT, SparkLowLevel.MotorType.kBrushless);
+        m_rightMotor = new SparkMax(DrivetrainConstants.CANIDs.RIGHT, SparkLowLevel.MotorType.kBrushless);
 
         // provides arcade drive
         drivetrain = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
         // softens arcade drive motion
-        filterArcade = new SlewRateLimiter(Constants.SLEW_RATE_LIMIT);
+        filterArcade = new SlewRateLimiter(DrivetrainConstants.SLEW_RATE_LIMIT);
 
         //setup left motor settings
         SparkMaxConfig configLeft = new SparkMaxConfig();
         configLeft
             .inverted(false)
-            .smartCurrentLimit(Constants.Drivetrain.CURRENT_LIMIT);
+            .smartCurrentLimit(DrivetrainConstants.CURRENT_LIMIT);
         
         //and then right motor settings
         SparkMaxConfig configRight = new SparkMaxConfig();
         configRight
             .inverted(true)
-            .smartCurrentLimit(Constants.Drivetrain.CURRENT_LIMIT);
+            .smartCurrentLimit(DrivetrainConstants.CURRENT_LIMIT);
 
         //now actually apply the motor settigs
         m_leftMotor.configure(configLeft,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);

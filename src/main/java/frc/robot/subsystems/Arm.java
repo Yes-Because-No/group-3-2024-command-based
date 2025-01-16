@@ -18,7 +18,6 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 //These make the command based programming magic happen
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 //contains PID setpoints, PID & feedforward values, and other useful variables
 //updating Constants.java will update all usage, so its best to keep them in a shared space
-import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
 
 public class Arm extends SubsystemBase{
     // instantiate motor controllers
@@ -38,12 +37,11 @@ public class Arm extends SubsystemBase{
 
     // create open loop control
     private ArmFeedforward armFeedforward = new ArmFeedforward(
-            Constants.Arm.Feedforward.kS, Constants.Arm.Feedforward.kG, Constants.Arm.Feedforward.kV);
+            ArmConstants.Feedforward.kS, ArmConstants.Feedforward.kG, ArmConstants.Feedforward.kV);
 
     // create closed loop control with restrictions
     private ProfiledPIDController armPidController = new ProfiledPIDController(
-            Constants.Arm.PID.kP, Constants.Arm.PID.kI, Constants.Arm.PID.kD, new TrapezoidProfile.Constraints(
-                    Constants.Arm.PID.constraints.kMAXV, Constants.Arm.PID.constraints.kMAXACC));
+            ArmConstants.PID.kP, ArmConstants.PID.kI, ArmConstants.PID.kD, ArmConstants.PID.TRAPEZOID_PROFILE);
 
     private double armVoltage;// stores sum of pid and feedforward, and is applied to arm motor
 
@@ -55,12 +53,12 @@ public class Arm extends SubsystemBase{
 
     public Arm() {
         //Create new brushless motor
-        m_Arm = new SparkMax(Constants.Arm.CANIDs.ARM, SparkLowLevel.MotorType.kBrushless);
+        m_Arm = new SparkMax(ArmConstants.CANIDs.ARM, SparkLowLevel.MotorType.kBrushless);
 
         //apply encoder conversions and smart current limits to arm motor
         SparkMaxConfig aConfig = new SparkMaxConfig();
-        aConfig.smartCurrentLimit(Constants.Arm.ARM_CURRENT_LIMIT);
-        aConfig.encoder.positionConversionFactor(Constants.Arm.ENCODER_TO_RADIANS);
+        aConfig.smartCurrentLimit(ArmConstants.ARM_CURRENT_LIMIT);
+        aConfig.encoder.positionConversionFactor(ArmConstants.ENCODER_TO_RADIANS);
         //the line that actually applies the changes made in the aConfig object
         m_Arm.configure(aConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -71,7 +69,7 @@ public class Arm extends SubsystemBase{
         armPidController.setTolerance(0.05);
 
         //set a goal before anything starts so if none is set by default, robot won't act odd
-        setArmGoal(Constants.Arm.PID.setpoints.GROUND);
+        setArmGoal(ArmConstants.PID.setpoints.GROUND);
 
     }
 
